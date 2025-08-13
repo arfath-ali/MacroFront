@@ -1,5 +1,7 @@
+import MacroFront from './pages/main/MacroFront';
+
 const App = () => {
-  return <></>;
+  return <MacroFront />;
 };
 
 export default App;
