@@ -1,7 +1,11 @@
+import Header from './components/Header';
+
 const MacroFront = () => {
   return (
     <div>
-      <header></header>
+      <header>
+        <Header />
+      </header>
       <main></main>
       <footer></footer>
     </div>
