@@ -71,11 +71,17 @@
     --tracking-5: 0.0313rem;
     --tracking-10: 0.0625rem;
     --tracking-25: 0.1563rem;
+
+    --gradient-body:
+        radial-gradient(60% 60% at 50% -10%, hsla(240, 60%, 70%, 0.7), transparent), radial-gradient(40% 40% at 80% 10%, hsla(180, 70%, 75%, 0.5), transparent);
 }
 
 @layer base {
     body {
+        height: 100vh;
         font-family: var(--font-inter);
+        background: var(--gradient-body);
+        background-blend-mode: normal;
     }
 }
 
