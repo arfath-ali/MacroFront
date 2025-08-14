@@ -72,3 +72,27 @@
     --tracking-10: 0.0625rem;
     --tracking-25: 0.1563rem;
 }
+
+@layer base {
+    body {
+        font-family: var(--font-inter);
+    }
+}
+
+@layer components {
+    .text-regular {
+        @apply font-regular text-14 leading-14 tracking-negative-17 tablet:text-18 tablet:leading-18 tablet:tracking-negative-25;
+    }
+
+    .text-medium {
+        @apply font-medium text-14 leading-14 tracking-negative-17 tablet:text-18 tablet:leading-18 tablet:tracking-negative-25;
+    }
+
+    .text-semibold {
+        @apply font-semibold text-16 leading-16 tracking-negative-17 tablet:text-20 tablet:leading-20 tablet:tracking-5;
+    }
+
+    .text-bold {
+        @apply font-bold text-20 leading-20 tracking-5 tablet:text-40 tablet:leading-40 tablet:tracking-10;
+    }
+}
