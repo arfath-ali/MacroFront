@@ -3,7 +3,7 @@ const Header = () => {
     <div className="p-4">
       <div className="flex justify-between">
         <h1 className="text-bold">MacroFront</h1>
-        <button className="text-semibold cursor-pointer rounded-[5px] border px-2 pb-1 transition-colors duration-200 hover:border-gray-400 hover:bg-gray-100">
+        <button className="text-semibold cursor-pointer rounded-[5px] border px-2 pb-1 hover:border-gray-400 hover:bg-gray-100">
           Sign In
         </button>
       </div>
