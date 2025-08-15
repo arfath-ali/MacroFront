@@ -73,7 +73,7 @@
     --tracking-25: 0.1563rem;
 
     --gradient-body:
-        radial-gradient(60% 60% at 50% -10%, hsla(240, 60%, 75%, 0.7), transparent), radial-gradient(40% 40% at 80% 10%, hsla(180, 70%, 80%, 0.5), transparent);
+        radial-gradient(60% 60% at 50% -10%, hsla(240, 60%, 75%, 0.6), transparent), radial-gradient(40% 40% at 80% 10%, hsla(180, 70%, 80%, 0.4), transparent);
 }
 
 @layer base {
