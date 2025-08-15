@@ -1,13 +1,9 @@
-import Header from './components/Header';
+import HomePage from '../home/HomePage';
 
 const MacroFront = () => {
   return (
     <div>
-      <header>
-        <Header />
-      </header>
-      <main></main>
-      <footer></footer>
+      <HomePage />
     </div>
   );
 };
