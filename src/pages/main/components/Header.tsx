@@ -9,7 +9,7 @@ const Header = () => {
       </div>
       <div className="tablet:mt-16 mt-8 text-center">
         <h1 className="text-bold text-2xl tablet:text-5xl"> Live Markets, Economic Insights and News</h1>
-        <p className="text-medium tablet:mt-4 mt-2 text-gray-900">
+        <p className="text-medium tablet:mt-4 mt-2 text-gray-500">
           Track Trends, Stay Informed, And Visualize Data In Real Time
         </p>
       </div>
