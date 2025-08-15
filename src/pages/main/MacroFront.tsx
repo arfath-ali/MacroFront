@@ -1,9 +1,9 @@
-import HomePage from '../home/HomePage';
+import MacroFrontSiteRoutes from './routes/MacroFrontSiteRoutes';
 
 const MacroFront = () => {
   return (
     <div>
-      <HomePage />
+      <MacroFrontSiteRoutes />
     </div>
   );
 };
