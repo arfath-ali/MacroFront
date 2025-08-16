@@ -120,6 +120,11 @@
     .feature-icon {
         @apply w-6 h-6 tablet:w-16 tablet:h-16;
     }
+
+    .btn-auth-signin,
+    .btn-auth-signup {
+        @apply rounded-[5px] py-1 flex-1;
+    }
 }
 
 @layer utilities {
