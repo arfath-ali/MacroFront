@@ -125,10 +125,28 @@
     .btn-auth-signup {
         @apply rounded-[5px] py-1 flex-1;
     }
+
+    .btn-auth-main-signin,
+    .btn-auth-main-signup,
+    .btn-auth-main-reset {
+        @apply rounded-[5px] py-2 mt-4 flex-1 bg-red-950 w-full;
+    }
 }
 
 @layer utilities {
     .border-default {
         @apply border hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700;
+    }
+
+    .input-default {
+        @apply rounded-[5px] outline-none w-full p-1 mt-1 mb-2
+    }
+
+    .flex-center-page {
+        @apply flex h-[100vh] items-center justify-center;
+    }
+
+    .flex-col-center-page {
+        @apply flex flex-col items-center
     }
 }

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
 import AuthFeatures from './components/AuthFeatures';
 
 const Auth = () => {
@@ -9,7 +11,7 @@ const Auth = () => {
     <>
       <header className="p-4">
         <h1 className="text-bold text-center text-4xl">MacroFront</h1>
-        <p className="tablet:block text-semibold hidden">
+        <p className="tablet:block text-semibold hidden text-center">
           Live markets.Economic insights.Real-time analytics.
         </p>
         <div className="tablet:block hidden">
@@ -19,7 +21,7 @@ const Auth = () => {
       <main className="p-4">
         <div className="flex flex-col items-center rounded-[5px] bg-gray-900 p-3">
           <h2 className="text-bold">Welcome to MacroFront</h2>
-          <div className="mt-1 flex w-full justify-center rounded-[5px] bg-gray-700 p-1">
+          <div className="mt-4 flex w-full justify-center rounded-[5px] bg-gray-700 p-1">
             <button
               onClick={() => {
                 setIsSignIn(true);
@@ -37,8 +39,9 @@ const Auth = () => {
               Sign Up
             </button>
           </div>
+          <div className="mt-4">{isSignIn ? <SignIn /> : <SignUp />}</div>
         </div>
-        <div className={isSignUp ? 'hidden' : 'tablet:hidden'}>
+        <div className={isSignUp ? 'hidden' : 'tablet:hidden mt-10'}>
           <AuthFeatures />
         </div>
       </main>
