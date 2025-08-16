@@ -112,4 +112,18 @@
     .text-bold {
         @apply font-bold text-20 leading-20 tracking-5 tablet:text-40 tablet:leading-40 tablet:tracking-10;
     }
+
+    .feature-item {
+        @apply flex flex-col items-center gap-1 rounded-[5px] p-2 flex-1
+    }
+
+    .feature-icon {
+        @apply w-6 h-6 tablet:w-16 tablet:h-16;
+    }
+}
+
+@layer utilities {
+    .border-default {
+        @apply border hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700;
+    }
 }
