@@ -10,19 +10,19 @@ import CryptoDarkIcon from '/src/assets/images/icons/crypto-dark-icon.png';
 const AuthFeatures = () => {
   return (
     <div className="grid grid-cols-2 gap-4">
-      <div className="feature-item">
+      <div className="feature-item border-default">
         <img src={GrowthChartDarkIcon} className="feature-icon" />
         <p>Live Markets</p>
       </div>
-      <div className="feature">
+      <div className="feature-item border-default">
         <img src={GlobalNewsDarkIcon} className="feature-icon" />
         <p>Global News</p>
       </div>
-      <div className="feature-item">
+      <div className="feature-item border-default">
         <img src={AnalyticsDarkIcon} className="feature-icon" />
         <p>Analytics</p>
       </div>
-      <div className="feature-item">
+      <div className="feature-item border-default">
         <img src={CryptoDarkIcon} className="feature-icon" />
         <p>Crypto</p>
       </div>
