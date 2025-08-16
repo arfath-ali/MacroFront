@@ -6,7 +6,7 @@ const PasswordResetSuccess = () => {
 
   return (
     <div className="flex-center-page">
-      <div className="flex-col-center-page gap-4 rounded-[5px] bg-gray-800 mx-2 p-4">
+      <div className="flex-col-center-page mx-2 gap-4 rounded-[5px] bg-gray-800 p-4">
         <img src={GreenCheckIcon} className="h-15 w-15" />
         <h1 className="text-bold text-center">Password Reset Successfully</h1>
         <p className="text-regular">
@@ -16,7 +16,7 @@ const PasswordResetSuccess = () => {
 
         <button
           className="btn-auth-main-reset"
-          onClick={() => navigate('/auth ', { replace: true })}>
+          onClick={() => navigate('/auth', { replace: true })}>
           Go to Sign In
         </button>
       </div>
