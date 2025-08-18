@@ -4,12 +4,12 @@ import type { ReactNode } from 'react';
 interface ThemeContextType {
   theme: string;
   setTheme: (p: string) => void;
-  clearTheme: () => void;
+  resetThemeState: () => void;
 }
 const ThemeContext = createContext<ThemeContextType>({
   theme: '',
   setTheme: () => {},
-  clearTheme: () => {},
+  resetThemeState: () => {},
 });
 
 interface ThemeProviderProps {
@@ -35,12 +35,12 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     }
   }, [theme]);
 
-  const clearTheme = () => {
+  const resetThemeState = () => {
     setTheme('light');
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, clearTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, resetThemeState }}>
       {children}
     </ThemeContext.Provider>
   );
