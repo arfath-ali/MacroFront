@@ -1,9 +1,10 @@
 import axios from 'axios';
-import 'dotenv/config';
 
-if (!process.env.BACKEND_URL) throw new Error('Backend URL is missing');
+const backendURL: string = import.meta.env.VITE_BACKEND_URL;
 
-const backendURL = process.env.BACKEND_URL;
+if (!backendURL) throw new Error('Backend URL is missing');
+
+const isDevelopment: boolean = import.meta.env.VITE_NODE_ENV === 'development';
 
 const axiosInstance = axios.create({
   baseURL: backendURL,
@@ -13,13 +14,11 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-process.on('uncaughtException', (error: unknown) => {
-  if (process.env.NODE_ENV === 'development') {
+window.addEventListener('error', (error) => {
+  if (isDevelopment) {
     const message = error instanceof Error ? error.message : String(error);
     console.log(message);
   }
-
-  process.exit(1);
 });
 
 export default axiosInstance;
