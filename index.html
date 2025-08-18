@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MacroFront</title>
     <script>
+      const appTheme = localStorage.getItem('theme');
       const deviceTheme = window.matchMedia(
         '(prefers-color-scheme: dark)',
       ).matches;
 
-      if (deviceTheme) document.documentElement.classList.add('dark');
+      if ((!appTheme && deviceTheme) || appTheme === 'dark')
+        document.documentElement.classList.add('dark');
       else document.documentElement.classList.remove('dark');
     </script>
   </head>
