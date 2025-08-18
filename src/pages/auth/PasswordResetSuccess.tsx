@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import GreenCheckIcon from '/src/assets/images/icons/green-check-icon.png';
+import GreenCheckIcon from '@/assets/images/icons/green-check-icon.png';
 
 const PasswordResetSuccess = () => {
   const navigate = useNavigate();
