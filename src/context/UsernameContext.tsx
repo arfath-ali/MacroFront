@@ -56,12 +56,13 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   function validateUsername(username: string): void {
     const regex = /^[0-9a-z_][0-9a-z_.]{1,}[0-9a-z_]$/;
     const usernameValidity: boolean = regex.test(username);
+    setIsUsernameValid(usernameValidity);
 
-    if (usernameValidity) setIsUsernameValid(usernameValidity);
-    else
+    if (!usernameValidity)
       setUsernameError(
         'Username must be at least 3 characters and can include letters, numbers, underscores, and dots. It cannot start or end with a dot.',
       );
+    else setUsernameError('');
   }
 
   useEffect(() => {
