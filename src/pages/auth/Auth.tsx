@@ -1,11 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import AuthFeatures from './components/AuthFeatures';
 
 const Auth = () => {
-  const [isSignIn, setIsSignIn] = useState(true);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignIn, setIsSignIn] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const savedAuth = localStorage.getItem('authTab');
+    if (savedAuth === 'sign-up') setIsSignIn(false);
+    else setIsSignIn(true);
+  }, []);
+
+  const handleSignInTab = () => {
+    setIsSignIn(true);
+    localStorage.setItem('authTab', 'sign-in');
+  };
+
+  const handleSignUpTab = () => {
+    setIsSignIn(false);
+    localStorage.setItem('authTab', 'sign-up');
+  };
 
   return (
     <>
@@ -24,24 +39,22 @@ const Auth = () => {
           <div className="mt-4 flex w-full justify-center rounded-[5px] bg-gray-700 p-1">
             <button
               onClick={() => {
-                setIsSignIn(true);
-                setIsSignUp(false);
+                handleSignInTab();
               }}
               className={`btn-auth-signin text-semibold ${isSignIn ? 'bg-black' : ''}`}>
               Sign In
             </button>
             <button
               onClick={() => {
-                setIsSignIn(false);
-                setIsSignUp(true);
+                handleSignUpTab();
               }}
-              className={`btn-auth-signup text-semibold ${isSignUp ? 'bg-black' : ''}`}>
+              className={`btn-auth-signup text-semibold ${!isSignIn ? 'bg-black' : ''}`}>
               Sign Up
             </button>
           </div>
           <div className="mt-4">{isSignIn ? <SignIn /> : <SignUp />}</div>
         </div>
-        <div className={isSignUp ? 'hidden' : 'tablet:hidden mt-10'}>
+        <div className={!isSignIn ? 'hidden' : 'tablet:hidden mt-10'}>
           <AuthFeatures />
         </div>
       </main>
