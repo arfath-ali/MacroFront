@@ -100,7 +100,7 @@ const SignUp = () => {
       isConfirmPasswordMatched
     ) {
       setSignUpError('');
-      await axiosInstance.post('/users', {
+      await axiosInstance.post('/users/create', {
         fullName,
         username,
         email,
