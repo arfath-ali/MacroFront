@@ -77,6 +77,7 @@ const SignUp = () => {
 
     if (emailValidity) {
       setIsEmailValid(true);
+      setEmailError('');
     } else {
       setIsEmailValid(false);
       setEmailError('Please enter a valid email address.');

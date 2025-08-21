@@ -60,8 +60,10 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
       const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])[0-9a-zA-Z!@#$%^&*()_+-]{8,}$/;
       const passwordValidity = regex.test(password);
 
-      if (passwordValidity) setIsPasswordValid(true);
-      else {
+      if (passwordValidity) {
+        setIsPasswordValid(true);
+        setPasswordError('');
+      } else {
         setIsPasswordValid(false);
         setPasswordError(
           'Password must be at least 8 characters long and include letters and numbers. Special characters are allowed.',
@@ -78,8 +80,10 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
       !isPasswordFieldFocused &&
       !isConfirmPasswordFieldFocused
     ) {
-      if (confirmPassword === password) setIsConfirmPasswordMatched(true);
-      else {
+      if (confirmPassword === password) {
+        setIsConfirmPasswordMatched(true);
+        setConfirmPasswordError('');
+      } else {
         setIsConfirmPasswordMatched(false);
         setConfirmPasswordError('Passwords do not match.');
       }
