@@ -91,8 +91,6 @@ const SignUp = () => {
       setSignUpError('All fields are required.');
 
     if (isUsernameValid && !isUsernameAvailable) {
-      console.log(isUsernameAvailable);
-      console.log(isUsernameValid);
       setSignUpError('Username is already taken.');
     }
 
@@ -104,6 +102,7 @@ const SignUp = () => {
       isConfirmPasswordMatched
     ) {
       setSignUpError('');
+
       await axiosInstance.post('/users/create', {
         fullName,
         username,
