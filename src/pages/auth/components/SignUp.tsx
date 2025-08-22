@@ -90,8 +90,11 @@ const SignUp = () => {
     if (!fullName || !username || !email || !password || !confirmPassword)
       setSignUpError('All fields are required.');
 
-    if (isUsernameValid && !isUsernameAvailable)
+    if (isUsernameValid && !isUsernameAvailable) {
+      console.log(isUsernameAvailable);
+      console.log(isUsernameValid);
       setSignUpError('Username is already taken.');
+    }
 
     if (
       isUsernameValid &&
