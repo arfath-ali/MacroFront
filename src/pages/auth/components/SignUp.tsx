@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import useUsernameContext from '@/context/UsernameContext';
 import usePasswordContext from '@/context/PasswordContext';
 import axiosInstance from '@/services/api';
+import { log } from '@/utils/logger';
 
 const SignUp = () => {
   const [fullName, setFullName] = useState('');
@@ -112,12 +113,14 @@ const SignUp = () => {
     ) {
       setSignUpError('');
 
-      await axiosInstance.post('/users/create', {
+      const response = await axiosInstance.post('/users/create', {
         fullName,
         username,
         email,
         password,
       });
+
+      log(response?.data?.message);
 
       resetUsernameState();
       resetPasswordState();
