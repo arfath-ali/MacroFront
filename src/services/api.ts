@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { error } from '@/utils/logger';
 
 const backendURL: string = import.meta.env.VITE_BACKEND_URL;
 
@@ -14,10 +15,26 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-window.addEventListener('error', (error) => {
+axiosInstance.interceptors.response.use(
+  (response) => response,
+
+  (error: any) => {
+    if (error.response) {
+      error('Backend Error: ', error.response.data?.error);
+    } else if (error.request) {
+      error('Network Error: Could not reach server');
+    } else {
+      error('Error:', error.message);
+    }
+
+    return Promise.resolve(error);
+  },
+);
+
+window.addEventListener('error', (err) => {
   if (isDevelopment) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.log(message);
+    const message = err instanceof Error ? err.message : String(err);
+    error(message);
   }
 });
 
