@@ -58,7 +58,11 @@ const SignUp = () => {
       isConfirmPasswordFieldFocused
     ) {
       setIsAnyFieldFocused(true);
-    } else setIsAnyFieldFocused(false);
+      return;
+    } else {
+      setIsAnyFieldFocused(false);
+      return;
+    }
   }, [
     isFullNameFieldFocused,
     isUsernameFieldFocused,
@@ -78,20 +82,25 @@ const SignUp = () => {
     if (emailValidity) {
       setIsEmailValid(true);
       setEmailError('');
+      return;
     } else {
       setIsEmailValid(false);
       setEmailError('Please enter a valid email address.');
+      return;
     }
   };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!fullName || !username || !email || !password || !confirmPassword)
+    if (!fullName || !username || !email || !password || !confirmPassword) {
       setSignUpError('All fields are required.');
+      return;
+    }
 
     if (isUsernameValid && !isUsernameAvailable) {
       setSignUpError('Username is already taken.');
+      return;
     }
 
     if (
@@ -112,6 +121,7 @@ const SignUp = () => {
 
       resetUsernameState();
       resetPasswordState();
+      return;
     }
   };
 
@@ -210,7 +220,13 @@ const SignUp = () => {
         </div>
       </div>
 
-      <button className="btn-auth-main-signin text-semibold">Sign Up</button>
+      <button
+        disabled={
+          !fullName || !username || !email || !password || !confirmPassword
+        }
+        className="btn-auth-main-signin text-semibold">
+        Sign Up
+      </button>
     </form>
   );
 };
