@@ -33,6 +33,7 @@ const SignUp = () => {
   >(null);
   const [emailError, setEmailError] = useState('');
 
+  const [signUpLoading, setSignUpLoading] = useState(false);
   const [signUpError, setSignUpError] = useState('');
 
   const {
@@ -124,20 +125,28 @@ const SignUp = () => {
       isConfirmPasswordMatched
     ) {
       setSignUpError('');
+      setSignUpLoading(true);
 
-      const response = await axiosInstance.post('/users/create', {
-        fullName,
-        username,
-        email,
-        password,
-      });
+      try {
+        const response = await axiosInstance.post('/users/create', {
+          fullName,
+          username,
+          email,
+          password,
+        });
 
-      log(response?.data?.message);
+        log(response?.data?.message);
 
-      resetUsernameState();
-      resetPasswordState();
+        resetUsernameState();
+        resetPasswordState();
 
-      navigate('/home', { replace: true });
+        setTimeout(() => {
+          setSignUpLoading(false);
+          navigate('/home', { replace: true });
+        }, 1500);
+      } catch (err: any) {
+        setSignUpError(err.response.data?.error);
+      }
       return;
     }
   };
@@ -266,7 +275,9 @@ const SignUp = () => {
         </div>
       </div>
 
-      <button className="btn-auth-main-signin text-semibold">Sign Up</button>
+      <button className="btn-auth-main-signin text-semibold">
+        {signUpLoading ? <ClipLoader size={30} /> : 'Sign Up'}
+      </button>
     </form>
   );
 };
