@@ -142,6 +142,10 @@
         @apply rounded-[5px] outline-none w-full p-1 mt-1 mb-2
     }
 
+    .username-input-default {
+        @apply rounded-[5px] outline-none w-full pl-1 py-1 pr-7 mt-1 mb-2
+    }
+
     .flex-center-page {
         @apply flex h-[100vh] items-center justify-center;
     }
