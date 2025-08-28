@@ -6,10 +6,10 @@ import axiosInstance from '@/services/api';
 interface UsernameContextType {
   username: string;
   setUsername: (p: string) => void;
-  isUsernameValid: boolean | null;
   isUsernameFieldFocused: boolean | null;
   setIsUsernameFieldFocused: (p: boolean | null) => void;
   usernameError: string;
+  isSearchingUsername: boolean;
   isUsernameAvailable: boolean | null;
   resetUsernameState: () => void;
 }
@@ -17,10 +17,10 @@ interface UsernameContextType {
 const UsernameContext = createContext<UsernameContextType>({
   username: '',
   setUsername: () => {},
-  isUsernameValid: null,
   isUsernameFieldFocused: null,
   setIsUsernameFieldFocused: () => {},
   usernameError: '',
+  isSearchingUsername: false,
   isUsernameAvailable: null,
   resetUsernameState: () => {},
 });
@@ -32,48 +32,58 @@ interface UsernameProviderProps {
 export function UsernameProvider({ children }: UsernameProviderProps) {
   const [username, setUsername] = useState('');
   const [usernameToDebounce, setUsernameToDebounce] = useState('');
-  const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(null);
-  const [isUsernameFieldFocused, setIsUsernameFieldFocused] = useState<
-    boolean | null
-  >(null);
-  const [usernameError, setUsernameError] = useState('');
   const [debouncedUsername, debouncedUsernameVersion] = useDebounce(
     usernameToDebounce,
     1000,
   );
+  const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(false);
+  const [usernameError, setUsernameError] = useState('');
+  const [isSearchingUsername, setIsSearchingUsername] = useState(false);
   const [isUsernameAvailable, setIsUsernameAvailable] = useState<
+    boolean | null
+  >(null);
+  const [isUsernameFieldFocused, setIsUsernameFieldFocused] = useState<
     boolean | null
   >(null);
 
   useEffect(() => {
     validateUsername(username);
-
-    if (isUsernameValid) {
-      setUsernameToDebounce(username);
-    }
   }, [username]);
 
   function validateUsername(username: string): void {
     const regex = /^[0-9a-z_][0-9a-z_.]{1,}[0-9a-z_]$/;
     const usernameValidity: boolean = regex.test(username);
     setIsUsernameValid(usernameValidity);
-
-    if (!usernameValidity)
-      setUsernameError(
-        'Username must be at least 3 characters and can include letters, numbers, underscores, and dots. It cannot start or end with a dot.',
-      );
-    else setUsernameError('');
   }
 
   useEffect(() => {
+    if (isUsernameValid) {
+      setUsernameError('');
+      setIsSearchingUsername(true);
+      setUsernameToDebounce(username);
+    } else if (isUsernameValid === false) {
+      setUsernameError(
+        'Username must be at least 3 characters and can include letters, numbers, underscores, and dots. It cannot start or end with a dot.',
+      );
+      setIsSearchingUsername(false);
+      setIsUsernameAvailable(null);
+    }
+  }, [username, isUsernameValid]);
+
+  useEffect(() => {
     const checkUsernameAvailability = async () => {
-      if (debouncedUsername) {
+      setIsUsernameAvailable(null);
+      if (isUsernameValid && debouncedUsername) {
         try {
-          const response = await axiosInstance.post('/check-username', {
+          const response = await axiosInstance.post('usernames/availability', {
             username: debouncedUsername,
           });
-        } catch (error) {
-          setIsUsernameAvailable(false);
+          setIsUsernameAvailable(response.data?.isAvailable);
+        } catch {
+          setIsUsernameAvailable(null);
+        } finally {
+          setIsSearchingUsername(false);
+          setIsUsernameValid(null);
         }
       }
     };
@@ -84,10 +94,9 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   const resetUsernameState = () => {
     setUsername('');
     setUsernameToDebounce('');
-    setIsUsernameValid(null);
     setUsernameError('');
-    setIsUsernameFieldFocused(null);
     setIsUsernameAvailable(null);
+    setIsUsernameFieldFocused(null);
   };
 
   return (
@@ -95,10 +104,10 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
       value={{
         username,
         setUsername,
-        isUsernameValid,
         isUsernameFieldFocused,
         setIsUsernameFieldFocused,
         usernameError,
+        isSearchingUsername,
         isUsernameAvailable,
         resetUsernameState,
       }}>
