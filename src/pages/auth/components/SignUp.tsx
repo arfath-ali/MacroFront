@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
 import useUsernameContext from '@/context/UsernameContext';
 import usePasswordContext from '@/context/PasswordContext';
 import axiosInstance from '@/services/api';
 import { log } from '@/utils/logger';
+import GreenCheckIcon from '@/assets/images/icons/green-check-icon.png';
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const [fullName, setFullName] = useState('');
   const [isFullNameFieldFocused, setIsFullNameFieldFocused] = useState<
     boolean | null
@@ -13,10 +18,10 @@ const SignUp = () => {
   const {
     username,
     setUsername,
-    isUsernameValid,
     isUsernameFieldFocused,
     setIsUsernameFieldFocused,
     usernameError,
+    isSearchingUsername,
     isUsernameAvailable,
     resetUsernameState,
   } = useUsernameContext();
@@ -72,6 +77,14 @@ const SignUp = () => {
     isConfirmPasswordFieldFocused,
   ]);
 
+  useEffect(() => {
+    if (isUsernameAvailable) {
+      setSignUpError('');
+    } else if (isUsernameAvailable === false) {
+      setSignUpError('Username is already taken.');
+    }
+  }, [isUsernameAvailable]);
+
   const validateEmail = (emailValue: string | null) => {
     if (!emailValue) return;
 
@@ -99,13 +112,12 @@ const SignUp = () => {
       return;
     }
 
-    if (isUsernameValid && !isUsernameAvailable) {
+    if (isUsernameAvailable === false) {
       setSignUpError('Username is already taken.');
       return;
     }
 
     if (
-      isUsernameValid &&
       isUsernameAvailable &&
       isEmailValid &&
       isPasswordValid &&
@@ -124,6 +136,8 @@ const SignUp = () => {
 
       resetUsernameState();
       resetPasswordState();
+
+      navigate('/home', { replace: true });
       return;
     }
   };
@@ -142,7 +156,15 @@ const SignUp = () => {
         name="full-name"
         onFocus={() => setIsFullNameFieldFocused(true)}
         onChange={(e) => setFullName(e.target.value)}
-        onBlur={() => setIsFullNameFieldFocused(false)}
+        onKeyDown={(e) => {
+          if (e.key === ' ') {
+            if (fullName === '' || fullName.endsWith(' ')) e.preventDefault();
+          }
+        }}
+        onBlur={() => {
+          setIsFullNameFieldFocused(false);
+          setFullName(fullName.trim());
+        }}
         value={fullName}
         className="border-default input-default text-medium"
       />
@@ -150,16 +172,28 @@ const SignUp = () => {
       <div>
         <label htmlFor="username">Username</label>
         <div>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            onFocus={() => setIsUsernameFieldFocused(true)}
-            onChange={(e) => setUsername(e.target.value)}
-            onBlur={() => setIsUsernameFieldFocused(false)}
-            value={username}
-            className="border-default input-default text-medium"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              onFocus={() => setIsUsernameFieldFocused(true)}
+              onChange={(e) => setUsername(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === ' ') e.preventDefault();
+              }}
+              onBlur={() => setIsUsernameFieldFocused(false)}
+              value={username}
+              className="border-default username-input-default text-medium"
+            />
+            <div className="absolute top-3 right-2 flex items-center">
+              {isSearchingUsername ? (
+                <ClipLoader size={15} color="#4F46E5" />
+              ) : isUsernameAvailable ? (
+                <img src={GreenCheckIcon} className="h-[15px] w-[15px]" />
+              ) : null}
+            </div>
+          </div>
           {!isAnyFieldFocused && username && !isUsernameFieldFocused && (
             <p>{usernameError}</p>
           )}
@@ -175,6 +209,9 @@ const SignUp = () => {
             name="email"
             onFocus={() => setIsEmailFieldFocused(true)}
             onChange={(e) => validateEmail(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === ' ') e.preventDefault();
+            }}
             onBlur={() => setIsEmailFieldFocused(false)}
             value={email}
             className="border-default input-default text-medium"
@@ -194,6 +231,9 @@ const SignUp = () => {
             name="password"
             onFocus={() => setIsPasswordFieldFocused(true)}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === ' ') e.preventDefault();
+            }}
             onBlur={() => setIsPasswordFieldFocused(false)}
             value={password}
             className="border-default input-default text-medium"
@@ -213,6 +253,9 @@ const SignUp = () => {
             name="confirm-password"
             onFocus={() => setIsConfirmPasswordFieldFocused(true)}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === ' ') e.preventDefault();
+            }}
             onBlur={() => setIsConfirmPasswordFieldFocused(false)}
             value={confirmPassword}
             className="border-default input-default text-medium"
@@ -223,13 +266,7 @@ const SignUp = () => {
         </div>
       </div>
 
-      <button
-        disabled={
-          !fullName || !username || !email || !password || !confirmPassword
-        }
-        className="btn-auth-main-signin text-semibold">
-        Sign Up
-      </button>
+      <button className="btn-auth-main-signin text-semibold">Sign Up</button>
     </form>
   );
 };
