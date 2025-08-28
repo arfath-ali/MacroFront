@@ -27,7 +27,7 @@ axiosInstance.interceptors.response.use(
       logError('Error:', err.message);
     }
 
-    return Promise.resolve(err);
+    return Promise.reject(err);
   },
 );
 
