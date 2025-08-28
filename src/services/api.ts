@@ -18,16 +18,16 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => response,
 
-  (error: any) => {
-    if (error.response) {
-      error('Backend Error: ', error.response.data?.error);
-    } else if (error.request) {
-      error('Network Error: Could not reach server');
+  (err: any) => {
+    if (err.response) {
+      error('Backend Error: ', err.response.data?.error);
+    } else if (err.request) {
+      error('Network error: Unable to reach server');
     } else {
-      error('Error:', error.message);
+      error('Error:', err.message);
     }
 
-    return Promise.resolve(error);
+    return Promise.resolve(err);
   },
 );
 
