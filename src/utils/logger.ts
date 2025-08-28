@@ -5,7 +5,7 @@ export function log(...args: unknown[]): void {
   return;
 }
 
-export function error(...args: unknown[]): void {
-  if (isDevelopment) console.error(...args);
+export function logError(...args: unknown[]): void {
+  if (isDevelopment) console.log(...args);
   return;
 }
