@@ -158,27 +158,29 @@ const SignUp = () => {
       }}>
       {signUpError && <p>{signUpError}</p>}
 
-      <label htmlFor="full-name">Full Name</label>
-      <input
-        type="text"
-        id="full-name"
-        name="full-name"
-        onFocus={() => setIsFullNameFieldFocused(true)}
-        onChange={(e) => setFullName(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === ' ') {
-            if (fullName === '' || fullName.endsWith(' ')) e.preventDefault();
-          }
-        }}
-        onBlur={() => {
-          setIsFullNameFieldFocused(false);
-          setFullName(fullName.trim());
-        }}
-        value={fullName}
-        className="border-default input-default text-medium"
-      />
+      <section>
+        <label htmlFor="full-name">Full Name</label>
+        <input
+          type="text"
+          id="full-name"
+          name="full-name"
+          onFocus={() => setIsFullNameFieldFocused(true)}
+          onChange={(e) => setFullName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === ' ') {
+              if (fullName === '' || fullName.endsWith(' ')) e.preventDefault();
+            }
+          }}
+          onBlur={() => {
+            setIsFullNameFieldFocused(false);
+            setFullName(fullName.trim());
+          }}
+          value={fullName}
+          className="border-default input-default text-medium"
+        />
+      </section>
 
-      <div>
+      <section>
         <label htmlFor="username">Username</label>
         <div>
           <div className="relative">
@@ -207,9 +209,9 @@ const SignUp = () => {
             <p>{usernameError}</p>
           )}
         </div>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <label htmlFor="email">Email</label>
         <div>
           <input
@@ -229,9 +231,9 @@ const SignUp = () => {
             <p>{emailError}</p>
           )}
         </div>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <label htmlFor="password">Password</label>
         <div>
           <input
@@ -251,9 +253,9 @@ const SignUp = () => {
             <p>{passwordError}</p>
           )}
         </div>
-      </div>
+      </section>
 
-      <div>
+      <section>
         <label htmlFor="confirm-password">Confirm Password</label>
         <div>
           <input
@@ -273,7 +275,7 @@ const SignUp = () => {
             confirmPassword &&
             !isConfirmPasswordFieldFocused && <p>{confirmPasswordError}</p>}
         </div>
-      </div>
+      </section>
 
       <button className="btn-auth-main-signin text-semibold">
         {signUpLoading ? <ClipLoader size={30} /> : 'Sign Up'}

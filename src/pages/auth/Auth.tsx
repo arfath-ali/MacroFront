@@ -34,9 +34,9 @@ const Auth = () => {
         </div>
       </header>
       <main className="p-4">
-        <div className="flex flex-col items-center rounded-[5px] bg-gray-900 p-3">
+        <section className="flex flex-col items-center rounded-[5px] bg-gray-900 p-3">
           <h2 className="text-bold">Welcome to MacroFront</h2>
-          <div className="mt-4 flex w-full justify-center rounded-[5px] bg-gray-700 p-1">
+          <section className="mt-4 flex w-full justify-center rounded-[5px] bg-gray-700 p-1">
             <button
               onClick={() => {
                 handleSignInTab();
@@ -51,12 +51,12 @@ const Auth = () => {
               className={`btn-auth-signup text-semibold ${!isSignIn ? 'bg-black' : ''}`}>
               Sign Up
             </button>
-          </div>
-          <div className="mt-4">{isSignIn ? <SignIn /> : <SignUp />}</div>
-        </div>
-        <div className={!isSignIn ? 'hidden' : 'tablet:hidden mt-10'}>
+          </section>
+          <section className="mt-4">{isSignIn ? <SignIn /> : <SignUp />}</section>
+        </section>
+        <section className={!isSignIn ? 'hidden' : 'tablet:hidden mt-10'}>
           <AuthFeatures />
-        </div>
+        </section>
       </main>
       <footer></footer>
     </>
