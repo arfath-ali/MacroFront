@@ -26,17 +26,18 @@ const Auth = () => {
     <>
       <header className="p-4">
         <h1 className="text-bold text-center text-4xl">MacroFront</h1>
-        <p className="tablet:block text-semibold hidden text-center">
+        <h2 className="tablet:block text-semibold hidden text-center">
           Live markets.Economic insights.Real-time analytics.
-        </p>
+        </h2>
         <div className="tablet:block hidden">
           <AuthFeatures />
         </div>
       </header>
+
       <main className="p-4">
-        <section className="flex flex-col items-center rounded-[5px] bg-gray-900 p-3">
+        <div className="flex flex-col items-center rounded-[5px] bg-gray-900 p-3">
           <h2 className="text-bold">Welcome to MacroFront</h2>
-          <section className="mt-4 flex w-full justify-center rounded-[5px] bg-gray-700 p-1">
+          <div className="mt-4 flex w-full justify-center rounded-[5px] bg-gray-700 p-1">
             <button
               onClick={() => {
                 handleSignInTab();
@@ -51,13 +52,16 @@ const Auth = () => {
               className={`btn-auth-signup text-semibold ${!isSignIn ? 'bg-black' : ''}`}>
               Sign Up
             </button>
-          </section>
-          <section className="mt-4">{isSignIn ? <SignIn /> : <SignUp />}</section>
-        </section>
-        <section className={!isSignIn ? 'hidden' : 'tablet:hidden mt-10'}>
+          </div>
+          <article className="mt-4">
+            {isSignIn ? <SignIn /> : <SignUp />}
+          </article>
+        </div>
+        <div className={!isSignIn ? 'hidden' : 'tablet:hidden mt-10'}>
           <AuthFeatures />
-        </section>
+        </div>
       </main>
+
       <footer></footer>
     </>
   );

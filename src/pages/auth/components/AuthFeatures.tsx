@@ -12,34 +12,37 @@ const AuthFeatures = () => {
   const { theme } = useThemeContext();
   return (
     <div className="grid grid-cols-2 gap-4">
-      <div className="feature-item border-default">
+      <article className="feature-item border-default">
         <img
           src={theme === 'dark' ? GrowthChartDarkIcon : GrowthChartLightIcon}
           className="feature-icon"
         />
         <p>Live Markets</p>
-      </div>
-      <div className="feature-item border-default">
+      </article>
+
+      <article className="feature-item border-default">
         <img
           src={theme === 'dark' ? GlobalNewsDarkIcon : GlobalNewsLightIcon}
           className="feature-icon"
         />
         <p>Global News</p>
-      </div>
-      <div className="feature-item border-default">
+      </article>
+
+      <article className="feature-item border-default">
         <img
           src={theme === 'dark' ? AnalyticsDarkIcon : AnalyticsLightIcon}
           className="feature-icon"
         />
         <p>Analytics</p>
-      </div>
-      <div className="feature-item border-default">
+      </article>
+
+      <article className="feature-item border-default">
         <img
           src={theme === 'dark' ? CryptoDarkIcon : CryptoLightIcon}
           className="feature-icon"
         />
         <p>Crypto</p>
-      </div>
+      </article>
     </div>
   );
 };

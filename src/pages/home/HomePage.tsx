@@ -3,9 +3,7 @@ import Header from './components/Header';
 const HomePage = () => {
   return (
     <>
-      <header>
-        <Header />
-      </header>
+      <Header />
       <main></main>
       <footer></footer>
     </>

@@ -158,7 +158,7 @@ const SignUp = () => {
       }}>
       {signUpError && <p>{signUpError}</p>}
 
-      <section>
+      <div>
         <label htmlFor="full-name">Full Name</label>
         <input
           type="text"
@@ -178,9 +178,9 @@ const SignUp = () => {
           value={fullName}
           className="border-default input-default text-medium"
         />
-      </section>
+      </div>
 
-      <section>
+      <div>
         <label htmlFor="username">Username</label>
         <div>
           <div className="relative">
@@ -209,9 +209,9 @@ const SignUp = () => {
             <p>{usernameError}</p>
           )}
         </div>
-      </section>
+      </div>
 
-      <section>
+      <div>
         <label htmlFor="email">Email</label>
         <div>
           <input
@@ -231,9 +231,9 @@ const SignUp = () => {
             <p>{emailError}</p>
           )}
         </div>
-      </section>
+      </div>
 
-      <section>
+      <div>
         <label htmlFor="password">Password</label>
         <div>
           <input
@@ -253,9 +253,9 @@ const SignUp = () => {
             <p>{passwordError}</p>
           )}
         </div>
-      </section>
+      </div>
 
-      <section>
+      <div>
         <label htmlFor="confirm-password">Confirm Password</label>
         <div>
           <input
@@ -275,7 +275,7 @@ const SignUp = () => {
             confirmPassword &&
             !isConfirmPasswordFieldFocused && <p>{confirmPasswordError}</p>}
         </div>
-      </section>
+      </div>
 
       <button className="btn-auth-main-signin text-semibold">
         {signUpLoading ? <ClipLoader size={30} /> : 'Sign Up'}

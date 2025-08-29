@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <div className="p-4">
+    <header className="p-4">
       <div className="flex justify-between">
         <h1 className="text-bold">MacroFront</h1>
         <button
@@ -12,15 +12,15 @@ const Header = () => {
           Sign In
         </button>
       </div>
-      <div className="tablet:mt-16 mt-8 text-center">
-        <h1 className="text-bold tablet:text-5xl text-2xl">
+      <section className="tablet:mt-16 mt-8 text-center">
+        <h2 className="text-bold tablet:text-5xl text-2xl">
           Live Markets, Economic Insights and News
-        </h1>
+        </h2>
         <p className="text-medium tablet:mt-4 mt-2 text-gray-500">
           Track Trends, Stay Informed, And Visualize Data In Real Time
         </p>
-      </div>
-    </div>
+      </section>
+    </header>
   );
 };
 
