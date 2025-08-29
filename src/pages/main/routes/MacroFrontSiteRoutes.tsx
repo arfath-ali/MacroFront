@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from 'pages/home/HomePage';
 import Auth from 'pages/auth/Auth';
 import ForgotPassword from 'pages/auth/ForgotPassword';
-import ResetLinkSent from 'pages/auth/components/ResetLinkSent';
+import ResetLinkSent from '@/pages/auth/ResetLinkSent';
 import ResetPassword from 'pages/auth/ResetPassword';
 import PasswordResetSuccess from 'pages/auth/PasswordResetSuccess';
 

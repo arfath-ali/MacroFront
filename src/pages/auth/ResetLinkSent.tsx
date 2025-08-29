@@ -8,15 +8,15 @@ const ResetLinkSent = () => {
 
   return (
     <div className="flex-center-page">
-      <div className="flex-col-center-page mx-2 gap-4 rounded-[5px] bg-gray-800 p-4">
-        <header>
+      <div className="mx-2 rounded-[5px] bg-gray-800 p-4">
+        <header className="mb-4 text-center">
           <h1 className="text-bold">Check your Email</h1>
           <p className="text-regular">
             We've sent a password reset link to your email
           </p>
         </header>
         <main>
-          <article>
+          <article className='flex-col-center-page gap-1'>
             <img src={GreenCheckIcon} className="h-15 w-15" />
             <p className="text-regular">We've sent a password reset link to:</p>
             <div className="w-full rounded-[5px] bg-amber-800 p-4 text-center">
