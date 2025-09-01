@@ -1,13 +1,15 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, useRef, createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 
 interface PasswordContextType {
+  passwordRef: React.RefObject<HTMLInputElement | null>;
   password: string;
   setPassword: (p: string) => void;
   isPasswordValid: boolean | null;
   isPasswordFieldFocused: boolean | null;
   setIsPasswordFieldFocused: (p: boolean | null) => void;
   passwordError: string;
+  confirmPasswordRef: React.RefObject<HTMLInputElement | null>;
   confirmPassword: string;
   setConfirmPassword: (p: string) => void;
   isConfirmPasswordMatched: boolean | null;
@@ -18,12 +20,14 @@ interface PasswordContextType {
 }
 
 const PasswordContext = createContext<PasswordContextType>({
+  passwordRef: { current: null },
   password: '',
   setPassword: () => {},
   isPasswordValid: null,
   isPasswordFieldFocused: null,
   setIsPasswordFieldFocused: () => {},
   passwordError: '',
+  confirmPasswordRef: { current: null },
   confirmPassword: '',
   setConfirmPassword: () => {},
   isConfirmPasswordMatched: null,
@@ -38,6 +42,7 @@ interface PasswordProviderProps {
 }
 
 export function PasswordProvider({ children }: PasswordProviderProps) {
+  const passwordRef = useRef<HTMLInputElement | null>(null);
   const [password, setPassword] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState<boolean | null>(null);
   const [isPasswordFieldFocused, setIsPasswordFieldFocused] = useState<
@@ -45,6 +50,7 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
   >(null);
   const [passwordError, setPasswordError] = useState('');
 
+  const confirmPasswordRef = useRef<HTMLInputElement | null>(null);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isConfirmPasswordMatched, setIsConfirmPasswordMatched] = useState<
     boolean | null
@@ -109,12 +115,14 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
   return (
     <PasswordContext.Provider
       value={{
+        passwordRef,
         password,
         setPassword,
         isPasswordValid,
         isPasswordFieldFocused,
         setIsPasswordFieldFocused,
         passwordError,
+        confirmPasswordRef,
         confirmPassword,
         setConfirmPassword,
         isConfirmPasswordMatched,
