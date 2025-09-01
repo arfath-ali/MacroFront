@@ -9,6 +9,7 @@ interface EmailContextType {
   setIsEmailFieldFocused: (p: boolean | null) => void;
   isEmailValid: boolean | null;
   emailError: string;
+  resetEmailState: () => void;
 }
 
 const EmailContext = createContext<EmailContextType>({
@@ -19,6 +20,7 @@ const EmailContext = createContext<EmailContextType>({
   setIsEmailFieldFocused: () => {},
   isEmailValid: null,
   emailError: '',
+  resetEmailState: () => {},
 });
 
 interface EmailProviderProps {
@@ -56,6 +58,14 @@ export function EmailProvider({ children }: EmailProviderProps) {
     validateEmail(email);
   }, [email]);
 
+  const resetEmailState = () => {
+    if (emailRef.current) emailRef.current.value === '';
+    setEmail('');
+    setIsEmailFieldFocused(null);
+    setIsEmailValid(null);
+    setEmailError('');
+  };
+
   return (
     <EmailContext.Provider
       value={{
@@ -66,6 +76,7 @@ export function EmailProvider({ children }: EmailProviderProps) {
         setIsEmailFieldFocused,
         isEmailValid,
         emailError,
+        resetEmailState,
       }}>
       {children}
     </EmailContext.Provider>
