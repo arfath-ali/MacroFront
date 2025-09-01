@@ -52,7 +52,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   >(null);
 
   useEffect(() => {
-    validateUsername(username);
+    if (username) validateUsername(username);
   }, [username]);
 
   function validateUsername(username: string): void {
