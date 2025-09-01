@@ -1,13 +1,15 @@
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, useRef, createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 import useDebounce from '@/hooks/useDebounce';
 import axiosInstance from '@/services/api';
 
 interface UsernameContextType {
+  usernameRef: React.RefObject<HTMLInputElement | null>;
   username: string;
   setUsername: (p: string) => void;
   isUsernameFieldFocused: boolean | null;
   setIsUsernameFieldFocused: (p: boolean | null) => void;
+  isUsernameValid: boolean | null;
   usernameError: string;
   isSearchingUsername: boolean;
   isUsernameAvailable: boolean | null;
@@ -15,10 +17,12 @@ interface UsernameContextType {
 }
 
 const UsernameContext = createContext<UsernameContextType>({
+  usernameRef: { current: null },
   username: '',
   setUsername: () => {},
   isUsernameFieldFocused: null,
   setIsUsernameFieldFocused: () => {},
+  isUsernameValid: null,
   usernameError: '',
   isSearchingUsername: false,
   isUsernameAvailable: null,
@@ -30,13 +34,14 @@ interface UsernameProviderProps {
 }
 
 export function UsernameProvider({ children }: UsernameProviderProps) {
+  const usernameRef = useRef<HTMLInputElement | null>(null);
   const [username, setUsername] = useState('');
   const [usernameToDebounce, setUsernameToDebounce] = useState('');
   const [debouncedUsername, debouncedUsernameVersion] = useDebounce(
     usernameToDebounce,
     1000,
   );
-  const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(false);
+  const [isUsernameValid, setIsUsernameValid] = useState<boolean | null>(null);
   const [usernameError, setUsernameError] = useState('');
   const [isSearchingUsername, setIsSearchingUsername] = useState(false);
   const [isUsernameAvailable, setIsUsernameAvailable] = useState<
@@ -91,6 +96,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   }, [debouncedUsernameVersion]);
 
   const resetUsernameState = () => {
+    if (usernameRef.current) usernameRef.current.value === '';
     setUsername('');
     setUsernameToDebounce('');
     setIsUsernameValid(null);
@@ -102,10 +108,12 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   return (
     <UsernameContext.Provider
       value={{
+        usernameRef,
         username,
         setUsername,
         isUsernameFieldFocused,
         setIsUsernameFieldFocused,
+        isUsernameValid,
         usernameError,
         isSearchingUsername,
         isUsernameAvailable,
