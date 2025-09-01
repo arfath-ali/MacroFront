@@ -59,13 +59,11 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   useEffect(() => {
     if (isUsernameValid) {
       setUsernameError('');
-      setIsSearchingUsername(true);
       setUsernameToDebounce(username);
     } else if (isUsernameValid === false) {
       setUsernameError(
         'Username must be at least 3 characters and can include letters, numbers, underscores, and dots. It cannot start or end with a dot.',
       );
-      setIsSearchingUsername(false);
       setIsUsernameAvailable(null);
     }
   }, [username, isUsernameValid]);
@@ -74,16 +72,17 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
     const checkUsernameAvailability = async () => {
       setIsUsernameAvailable(null);
       if (isUsernameValid && debouncedUsername) {
+        setIsSearchingUsername(true);
         try {
           const response = await axiosInstance.post('usernames/availability', {
             username: debouncedUsername,
           });
-          setIsUsernameAvailable(response.data?.isAvailable);
+          setTimeout(() => {
+            setIsUsernameAvailable(response.data?.isAvailable);
+            setIsSearchingUsername(false);
+          }, 1000);
         } catch {
           setIsUsernameAvailable(null);
-        } finally {
-          setIsSearchingUsername(false);
-          setIsUsernameValid(null);
         }
       }
     };
@@ -94,6 +93,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   const resetUsernameState = () => {
     setUsername('');
     setUsernameToDebounce('');
+    setIsUsernameValid(null);
     setUsernameError('');
     setIsUsernameAvailable(null);
     setIsUsernameFieldFocused(null);
