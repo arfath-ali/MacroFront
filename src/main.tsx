@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CurrentPathProvider } from './context/CurrentPathContext.tsx';
 import { ThemeProvider } from './context/ThemeContext.tsx';
 import { UsernameProvider } from './context/UsernameContext.tsx';
+import { EmailProvider } from './context/EmailContext.tsx';
 import { PasswordProvider } from './context/PasswordContext.tsx';
 import App from './App.tsx';
 import './assets/styles/App.css';
@@ -14,9 +15,11 @@ createRoot(document.getElementById('root')!).render(
       <ThemeProvider>
         <CurrentPathProvider>
           <UsernameProvider>
-            <PasswordProvider>
-              <App />
-            </PasswordProvider>
+            <EmailProvider>
+              <PasswordProvider>
+                <App />
+              </PasswordProvider>
+            </EmailProvider>
           </UsernameProvider>
         </CurrentPathProvider>
       </ThemeProvider>
