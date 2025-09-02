@@ -52,7 +52,10 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   >(null);
 
   useEffect(() => {
-    if (username) validateUsername(username);
+    if (username) {
+      setUsernameError('');
+      validateUsername(username);
+    }
   }, [username]);
 
   function validateUsername(username: string): void {
@@ -101,6 +104,16 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
 
     checkUsernameAvailability();
   }, [debouncedUsernameVersion]);
+
+  useEffect(() => {
+    if (isUsernameAvailable) {
+      setUsernameError('');
+      return;
+    } else if (isUsernameAvailable === false) {
+      setUsernameError("This username isn't available. Please try another.");
+      return;
+    }
+  }, [isUsernameAvailable]);
 
   const resetUsernameState = () => {
     if (usernameRef.current) usernameRef.current.value === '';
