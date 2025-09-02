@@ -37,26 +37,27 @@ export function EmailProvider({ children }: EmailProviderProps) {
   const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
-    const validateEmail = (email: string | null) => {
-      if (!email) return;
-
-      setEmail(email);
-
-      const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      const emailValidity: boolean = regex.test(email);
-
-      if (emailValidity) {
-        setIsEmailValid(true);
-        setEmailError('');
-        return;
-      } else {
-        setIsEmailValid(false);
-        setEmailError('Please enter a valid email address.');
-        return;
-      }
-    };
-    validateEmail(email);
+    if (email) {
+      setEmailError('');
+      validateEmail(email);
+    }
   }, [email]);
+
+  const validateEmail = (email: string) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const emailValidity: boolean = regex.test(email);
+    setIsEmailValid(emailValidity);
+  };
+
+  useEffect(() => {
+    if (isEmailValid) {
+      setEmailError('');
+      return;
+    } else {
+      setEmailError('Please enter a valid email address.');
+      return;
+    }
+  }, [isEmailValid]);
 
   const resetEmailState = () => {
     if (emailRef.current) emailRef.current.value === '';
