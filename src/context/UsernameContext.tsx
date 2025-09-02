@@ -56,7 +56,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   }, [username]);
 
   function validateUsername(username: string): void {
-    const regex = /^[0-9a-z_][0-9a-z_.]{1,}[0-9a-z_]$/;
+    const regex = /^[0-9a-z_](?:[0-9a-z_.]*[0-9a-z_])?$/;
     const usernameValidity: boolean = regex.test(username);
     setIsUsernameValid(usernameValidity);
   }
@@ -66,10 +66,17 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
       setUsernameError('');
       setUsernameToDebounce(username);
     } else if (isUsernameValid === false) {
-      setUsernameError(
-        'Username must be at least 3 characters and can include letters, numbers, underscores, and dots. It cannot start or end with a dot.',
-      );
+      if (username.startsWith('.')) {
+        setUsernameError("You can't start your username with a period.");
+      } else if (username.endsWith('.')) {
+        setUsernameError("You can't end your username with a period.");
+      } else {
+        setUsernameError(
+          'Usernames can only use letters, numbers, underscores and periods.',
+        );
+      }
       setIsUsernameAvailable(null);
+      return;
     }
   }, [username, isUsernameValid]);
 
