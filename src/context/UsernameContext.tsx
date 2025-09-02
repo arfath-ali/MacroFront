@@ -53,10 +53,10 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
 
   useEffect(() => {
     if (username) {
-      setIsUsernameAvailable(null);
       setUsernameError('');
       validateUsername(username);
     }
+    setIsUsernameAvailable(null);
   }, [username]);
 
   function validateUsername(username: string): void {
