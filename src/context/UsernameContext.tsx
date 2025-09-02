@@ -54,22 +54,27 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   >(null);
 
   useEffect(() => {
-    if (username) {
-      setUsernameError('');
-      setIsUsernameValid(null);
+    if (username.trim() === '') {
+      setUsernameToDebounce('');
       setIsUsernameAvailable(null);
+      return;
+    }
+
+    if (username) {
       validateUsername(username);
     }
   }, [username]);
 
   function validateUsername(username: string): void {
+    console.log('Namaste Na');
+    console.log('Username: ', username);
     const regex = /^[0-9a-z_](?:[0-9a-z_.]*[0-9a-z_])?$/;
     const usernameValidity: boolean = regex.test(username);
     setIsUsernameValid(usernameValidity);
   }
 
   useEffect(() => {
-    if (isUsernameValid && isUsernameAvailable !== false) {
+    if (username && isUsernameValid) {
       setUsernameError('');
       setUsernameToDebounce(username);
     } else if (
