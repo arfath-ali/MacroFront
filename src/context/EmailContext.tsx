@@ -43,7 +43,7 @@ export function EmailProvider({ children }: EmailProviderProps) {
     }
   }, [email]);
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email: string): void => {
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const emailValidity: boolean = regex.test(email);
     setIsEmailValid(emailValidity);
