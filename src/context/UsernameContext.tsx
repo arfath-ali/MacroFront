@@ -53,6 +53,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
 
   useEffect(() => {
     if (username) {
+      setIsUsernameAvailable(null);
       setUsernameError('');
       validateUsername(username);
     }
@@ -68,7 +69,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
     if (isUsernameValid) {
       setUsernameError('');
       setUsernameToDebounce(username);
-    } else if (isUsernameValid === false) {
+    } else if (isUsernameValid === false && isUsernameFieldFocused === false) {
       if (username.startsWith('.')) {
         setUsernameError("You can't start your username with a period.");
       } else if (username.endsWith('.')) {
@@ -85,7 +86,6 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
 
   useEffect(() => {
     const checkUsernameAvailability = async () => {
-      setIsUsernameAvailable(null);
       if (isUsernameValid && debouncedUsername) {
         setIsSearchingUsername(true);
         try {
