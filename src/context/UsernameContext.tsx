@@ -56,9 +56,10 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   useEffect(() => {
     if (username) {
       setUsernameError('');
+      setIsUsernameValid(null);
+      setIsUsernameAvailable(null);
       validateUsername(username);
     }
-    setIsUsernameAvailable(null);
   }, [username]);
 
   function validateUsername(username: string): void {
@@ -68,10 +69,14 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   }
 
   useEffect(() => {
-    if (isUsernameValid) {
+    if (isUsernameValid && isUsernameAvailable !== false) {
       setUsernameError('');
       setUsernameToDebounce(username);
-    } else if (isUsernameValid === false && isUsernameFieldFocused === false) {
+    } else if (
+      username &&
+      isUsernameValid === false &&
+      isUsernameFieldFocused === false
+    ) {
       if (username.startsWith('.')) {
         setUsernameError("You can't start your username with a period.");
       } else if (username.endsWith('.')) {
@@ -81,10 +86,8 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
           'Usernames can only use letters, numbers, underscores and periods.',
         );
       }
-      setIsUsernameAvailable(null);
-      return;
     }
-  }, [username, isUsernameValid]);
+  }, [username, isUsernameValid, isUsernameFieldFocused]);
 
   useEffect(() => {
     const checkUsernameAvailability = async () => {
@@ -105,7 +108,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
     };
 
     checkUsernameAvailability();
-  }, [debouncedUsernameVersion]);
+  }, [isUsernameValid, debouncedUsernameVersion]);
 
   useEffect(() => {
     if (isUsernameAvailable) {
@@ -118,7 +121,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   }, [isUsernameAvailable]);
 
   const resetUsernameState = () => {
-    if (usernameRef.current) usernameRef.current.value === '';
+    if (usernameRef.current) usernameRef.current.value = '';
     setUsername('');
     setUsernameToDebounce('');
     setIsUsernameValid(null);
