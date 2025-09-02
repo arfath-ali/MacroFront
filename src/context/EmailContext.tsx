@@ -55,7 +55,7 @@ export function EmailProvider({ children }: EmailProviderProps) {
     if (isEmailValid) {
       setEmailError('');
       return;
-    } else {
+    } else if (isEmailValid === false) {
       setEmailError('Please enter a valid email address.');
       return;
     }
