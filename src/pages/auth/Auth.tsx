@@ -53,7 +53,7 @@ const Auth = () => {
               Sign Up
             </button>
           </div>
-          <article className="mt-4">
+          <article className="mt-4 w-full">
             {isSignIn ? <SignIn /> : <SignUp />}
           </article>
         </div>
