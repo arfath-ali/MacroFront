@@ -60,24 +60,25 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   useEffect(() => {
-    const validatePassword = () => {
-      if (!password) return;
-
-      const regex = /^(?=.*[a-zA-Z])(?=.*[0-9])[0-9a-zA-Z!@#$%^&*()_+-]{8,}$/;
-      const passwordValidity = regex.test(password);
-
-      if (passwordValidity) {
-        setIsPasswordValid(true);
-        setPasswordError('');
-      } else {
-        setIsPasswordValid(false);
-        setPasswordError(
-          'Password must be at least 8 characters long and include letters and numbers. Special characters are allowed.',
-        );
-      }
-    };
-    validatePassword();
+    if (password) {
+      setPasswordError('');
+      validatePassword(password);
+    }
   }, [password]);
+
+  const validatePassword = (password: string): void => {
+    const regex = /^.{8,}$/;
+    const passwordValidity = regex.test(password);
+    setIsPasswordValid(passwordValidity);
+  };
+
+  useEffect(() => {
+    if (isPasswordValid) {
+      setPasswordError('');
+    } else if (isPasswordValid === false) {
+      setPasswordError('Password must be at least 8 characters long');
+    }
+  }, [isPasswordValid]);
 
   useEffect(() => {
     if (
