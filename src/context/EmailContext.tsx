@@ -40,7 +40,6 @@ export function EmailProvider({ children }: EmailProviderProps) {
 
   useEffect(() => {
     if (email) {
-      setEmailError('');
       validateEmail(email);
     }
   }, [email]);

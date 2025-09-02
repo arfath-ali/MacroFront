@@ -65,7 +65,6 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
 
   useEffect(() => {
     if (password) {
-      setPasswordError('');
       validatePassword(password);
     }
   }, [password]);
