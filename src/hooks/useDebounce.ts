@@ -8,14 +8,14 @@ export default function useDebounce(
   const [debouncedUsernameVersion, setDebouncedUsernameVersion] = useState('');
 
   useEffect(() => {
-    if (usernameToDebounce) {
-      const timer = setTimeout(() => {
-        setDebouncedUsername(usernameToDebounce);
-        setDebouncedUsernameVersion((prev) => prev + 1);
-      }, delay);
+    const trimmedUsername = usernameToDebounce?.trim() || '';
 
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(() => {
+      setDebouncedUsername(trimmedUsername);
+      setDebouncedUsernameVersion((prev) => prev + 1);
+    }, delay);
+
+    return () => clearTimeout(timer);
   }, [usernameToDebounce]);
 
   return [debouncedUsername, debouncedUsernameVersion];
