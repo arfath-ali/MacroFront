@@ -13,18 +13,16 @@ const SignUp = () => {
 
   const fullNameRef = useRef<HTMLInputElement>(null);
   const [fullName, setFullName] = useState('');
-  const [isFullNameFieldFocused, setIsFullNameFieldFocused] = useState<
-    boolean | null
-  >(null);
+  const [fullNameError, setFullNameError] = useState('');
 
   const {
     usernameRef,
     username,
     setUsername,
-    isUsernameFieldFocused,
     setIsUsernameFieldFocused,
     isUsernameValid,
     usernameError,
+    setUsernameError,
     isSearchingUsername,
     isUsernameAvailable,
     resetUsernameState,
@@ -34,10 +32,10 @@ const SignUp = () => {
     emailRef,
     email,
     setEmail,
-    isEmailFieldFocused,
     setIsEmailFieldFocused,
     isEmailValid,
     emailError,
+    setEmailError,
     resetEmailState,
   } = useEmailContext();
 
@@ -46,22 +44,47 @@ const SignUp = () => {
     password,
     setPassword,
     isPasswordValid,
-    isPasswordFieldFocused,
     setIsPasswordFieldFocused,
     passwordError,
+    setPasswordError,
     confirmPasswordRef,
     confirmPassword,
     setConfirmPassword,
     isConfirmPasswordMatched,
-    isConfirmPasswordFieldFocused,
     setIsConfirmPasswordFieldFocused,
     confirmPasswordError,
+    setConfirmPasswordError,
     resetPasswordState,
   } = usePasswordContext();
 
-  const [isAnyFieldFocused, setIsAnyFieldFocused] = useState<boolean | null>(
-    null,
-  );
+  const fields = [
+    { value: fullName, ref: fullNameRef, setError: setFullNameError },
+    {
+      value: username,
+      ref: usernameRef,
+      setError: setUsernameError,
+      valid: isUsernameValid,
+      available: isUsernameAvailable,
+    },
+    {
+      value: email,
+      ref: emailRef,
+      setError: setEmailError,
+      valid: isEmailValid,
+    },
+    {
+      value: password,
+      ref: passwordRef,
+      setError: setPasswordError,
+      valid: isPasswordValid,
+    },
+    {
+      value: confirmPassword,
+      ref: confirmPasswordRef,
+      setError: setConfirmPasswordError,
+      valid: isConfirmPasswordMatched,
+    },
+  ];
 
   const [isSignUpButtonClicked, setIsSignUpButtonClicked] = useState(false);
   const [signUpLoading, setSignUpLoading] = useState(false);
@@ -73,76 +96,25 @@ const SignUp = () => {
     resetPasswordState();
   }, []);
 
-  useEffect(() => {
-    if (
-      isFullNameFieldFocused ||
-      isUsernameFieldFocused ||
-      isEmailFieldFocused ||
-      isPasswordFieldFocused ||
-      isConfirmPasswordFieldFocused
-    ) {
-      setIsAnyFieldFocused(true);
-      return;
-    } else {
-      setIsAnyFieldFocused(false);
-      return;
-    }
-  }, [
-    isFullNameFieldFocused,
-    isUsernameFieldFocused,
-    isEmailFieldFocused,
-    isPasswordFieldFocused,
-    isConfirmPasswordFieldFocused,
-  ]);
-
-  useEffect(() => {
-    if (isUsernameAvailable) {
-      setSignUpError('');
-    } else if (isUsernameAvailable === false) {
-      setSignUpError('Username is already taken.');
-    }
-  }, [isUsernameAvailable]);
-
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     setIsSignUpButtonClicked(true);
 
-    if (!fullName || !username || !email || !password || !confirmPassword) {
-      setSignUpError('All fields are required.');
-      return;
+    let hasFocused = false;
+
+    for (const field of fields) {
+      if (!field.value) {
+        field.setError('This field is required');
+
+        if (!hasFocused) {
+          field.ref.current?.focus();
+          hasFocused = true;
+        }
+      }
     }
 
-    if (!fullName) {
-      fullNameRef.current?.focus();
-      return;
-    }
-
-    if (
-      !username ||
-      isUsernameValid === false ||
-      isUsernameAvailable === false
-    ) {
-      usernameRef.current?.focus();
-
-      if (isUsernameAvailable === false)
-        setSignUpError('Username is already taken.');
-      return;
-    }
-
-    if (!email || isEmailValid === false) {
-      emailRef.current?.focus();
-      return;
-    }
-
-    if (!password || isPasswordValid === false) {
-      passwordRef.current?.focus();
-      return;
-    }
-
-    if (!confirmPassword || isConfirmPasswordMatched === false) {
-      confirmPasswordRef.current?.focus();
-      return;
-    }
+    if (hasFocused) return;
 
     if (
       isUsernameAvailable &&
@@ -150,7 +122,6 @@ const SignUp = () => {
       isPasswordValid &&
       isConfirmPasswordMatched
     ) {
-      setSignUpError('');
       setSignUpLoading(true);
 
       try {
@@ -172,8 +143,10 @@ const SignUp = () => {
           setIsSignUpButtonClicked(false);
           navigate('/home', { replace: true });
         }, 1500);
-      } catch (err: any) {
-        setSignUpError(err.response.data?.error);
+      } catch {
+        setSignUpError('Something went wrong. Please try again.');
+        setSignUpLoading(false);
+        setIsSignUpButtonClicked(false);
       }
       return;
     }
@@ -184,37 +157,42 @@ const SignUp = () => {
       onSubmit={(e) => {
         handleSignUp(e);
       }}>
-      {signUpError && (
-        <p id="signUpError" role="alert">
-          {signUpError}
-        </p>
-      )}
-
+      {signUpError && <p aria-live="polite">{signUpError}</p>}
       <div>
         <label htmlFor="full-name">Full Name</label>
-        <input
-          type="text"
-          id="full-name"
-          name="full-name"
-          ref={fullNameRef}
-          onFocus={() => setIsFullNameFieldFocused(true)}
-          onChange={(e) => {
-            setFullName(e.target.value);
-            setSignUpError('');
-            setIsSignUpButtonClicked(false);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === ' ') {
-              if (fullName === '' || fullName.endsWith(' ')) e.preventDefault();
-            }
-          }}
-          onBlur={() => {
-            setIsFullNameFieldFocused(false);
-            setFullName(fullName.trim());
-          }}
-          value={fullName}
-          className="input-default text-medium border hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700"
-        />
+        <div>
+          <input
+            type="text"
+            id="full-name"
+            name="full-name"
+            ref={fullNameRef}
+            aria-describedby="fullNameError"
+            onChange={(e) => {
+              setFullName(e.target.value);
+              if (isSignUpButtonClicked && e.target.value.trim() === '') {
+                setFullNameError('This field is required.');
+              } else setFullNameError('');
+            }}
+            onKeyDown={(e) => {
+              if (e.key === ' ') {
+                if (fullName === '' || fullName.endsWith(' '))
+                  e.preventDefault();
+              }
+            }}
+            onBlur={() => {
+              setFullName(fullName.trim());
+            }}
+            value={fullName}
+            className={`input-default text-medium border ${
+              fullNameError
+                ? 'border-red-600'
+                : 'hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700'
+            } `}
+          />
+          <p id="fullNameError" aria-live="polite">
+            {fullNameError ? fullNameError : ''}
+          </p>
+        </div>
       </div>
 
       <div>
@@ -230,8 +208,9 @@ const SignUp = () => {
               onFocus={() => setIsUsernameFieldFocused(true)}
               onChange={(e) => {
                 setUsername(e.target.value);
-                setSignUpError('');
-                setIsSignUpButtonClicked(false);
+                if (isSignUpButtonClicked && e.target.value.trim() === '') {
+                  setUsernameError('This field is required.');
+                } else setUsernameError('');
               }}
               onKeyDown={(e) => {
                 if (e.key === ' ') e.preventDefault();
@@ -241,7 +220,7 @@ const SignUp = () => {
               }}
               value={username}
               className={`username-input-default text-medium border ${
-                isUsernameValid === false && isUsernameFieldFocused === false
+                usernameError
                   ? 'border-red-600'
                   : 'hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700'
               } `}
@@ -269,12 +248,7 @@ const SignUp = () => {
             </div>
           </div>
           <p id="usernameError" aria-live="polite" aria-atomic="true">
-            {(isUsernameValid === false &&
-              !isAnyFieldFocused &&
-              isUsernameFieldFocused === false) ||
-            (isSignUpButtonClicked && isUsernameFieldFocused)
-              ? usernameError
-              : ''}
+            {usernameError ? usernameError : ''}
           </p>
         </div>
       </div>
@@ -291,8 +265,9 @@ const SignUp = () => {
             onFocus={() => setIsEmailFieldFocused(true)}
             onChange={(e) => {
               setEmail(e.target.value);
-              setSignUpError('');
-              setIsSignUpButtonClicked(false);
+              if (isSignUpButtonClicked && e.target.value.trim() === '') {
+                setEmailError('This field is required.');
+              } else setEmailError('');
             }}
             onKeyDown={(e) => {
               if (e.key === ' ') e.preventDefault();
@@ -301,12 +276,14 @@ const SignUp = () => {
               setIsEmailFieldFocused(false);
             }}
             value={email}
-            className="input-default text-medium border hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700"
+            className={`input-default text-medium border ${
+              emailError
+                ? 'border-red-600'
+                : 'hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700'
+            } `}
           />
           <p id="emailError" aria-live="polite">
-            {!isAnyFieldFocused && email && !isEmailFieldFocused
-              ? emailError
-              : ''}
+            {emailError ? emailError : ''}
           </p>
         </div>
       </div>
@@ -323,8 +300,9 @@ const SignUp = () => {
             onFocus={() => setIsPasswordFieldFocused(true)}
             onChange={(e) => {
               setPassword(e.target.value);
-              setSignUpError('');
-              setIsSignUpButtonClicked(false);
+              if (isSignUpButtonClicked && e.target.value.trim() === '') {
+                setPasswordError('This field is required.');
+              } else setPasswordError('');
             }}
             onKeyDown={(e) => {
               if (e.key === ' ') e.preventDefault();
@@ -333,12 +311,14 @@ const SignUp = () => {
               setIsPasswordFieldFocused(false);
             }}
             value={password}
-            className="input-default text-medium border hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700"
+            className={`input-default text-medium border ${
+              passwordError
+                ? 'border-red-600'
+                : 'hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700'
+            } `}
           />
           <p id="passwordError" aria-live="polite">
-            {!isAnyFieldFocused && password && !isPasswordFieldFocused
-              ? passwordError
-              : ''}
+            {passwordError ? passwordError : ''}
           </p>
         </div>
       </div>
@@ -355,8 +335,9 @@ const SignUp = () => {
             onFocus={() => setIsConfirmPasswordFieldFocused(true)}
             onChange={(e) => {
               setConfirmPassword(e.target.value);
-              setSignUpError('');
-              setIsSignUpButtonClicked(false);
+              if (isSignUpButtonClicked && e.target.value.trim() === '') {
+                setConfirmPasswordError('This field is required.');
+              } else setConfirmPasswordError('');
             }}
             onKeyDown={(e) => {
               if (e.key === ' ') e.preventDefault();
@@ -365,15 +346,15 @@ const SignUp = () => {
               setIsConfirmPasswordFieldFocused(false);
             }}
             value={confirmPassword}
-            className="input-default text-medium border hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700"
+            className={`input-default text-medium border ${
+              confirmPasswordError
+                ? 'border-red-600'
+                : 'hover:border-gray-400 dark:border-gray-400 dark:hover:border-gray-700'
+            } `}
           />
 
           <p id="confirmPasswordError" aria-live="polite">
-            {!isAnyFieldFocused &&
-            confirmPassword &&
-            !isConfirmPasswordFieldFocused
-              ? confirmPasswordError
-              : ''}
+            {confirmPasswordError ? confirmPasswordError : ''}
           </p>
         </div>
       </div>
