@@ -11,6 +11,7 @@ interface UsernameContextType {
   setIsUsernameFieldFocused: (p: boolean | null) => void;
   isUsernameValid: boolean | null;
   usernameError: string;
+  setUsernameError: (p: string) => void;
   isSearchingUsername: boolean;
   isUsernameAvailable: boolean | null;
   resetUsernameState: () => void;
@@ -24,6 +25,7 @@ const UsernameContext = createContext<UsernameContextType>({
   setIsUsernameFieldFocused: () => {},
   isUsernameValid: null,
   usernameError: '',
+  setUsernameError: () => {},
   isSearchingUsername: false,
   isUsernameAvailable: null,
   resetUsernameState: () => {},
@@ -135,6 +137,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
         setIsUsernameFieldFocused,
         isUsernameValid,
         usernameError,
+        setUsernameError,
         isSearchingUsername,
         isUsernameAvailable,
         resetUsernameState,

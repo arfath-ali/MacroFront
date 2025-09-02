@@ -9,6 +9,7 @@ interface PasswordContextType {
   isPasswordFieldFocused: boolean | null;
   setIsPasswordFieldFocused: (p: boolean | null) => void;
   passwordError: string;
+  setPasswordError: (p: string) => void;
   confirmPasswordRef: React.RefObject<HTMLInputElement | null>;
   confirmPassword: string;
   setConfirmPassword: (p: string) => void;
@@ -16,6 +17,7 @@ interface PasswordContextType {
   isConfirmPasswordFieldFocused: boolean | null;
   setIsConfirmPasswordFieldFocused: (p: boolean | null) => void;
   confirmPasswordError: string;
+  setConfirmPasswordError: (p: string) => void;
   resetPasswordState: () => void;
 }
 
@@ -27,6 +29,7 @@ const PasswordContext = createContext<PasswordContextType>({
   isPasswordFieldFocused: null,
   setIsPasswordFieldFocused: () => {},
   passwordError: '',
+  setPasswordError: () => {},
   confirmPasswordRef: { current: null },
   confirmPassword: '',
   setConfirmPassword: () => {},
@@ -34,6 +37,7 @@ const PasswordContext = createContext<PasswordContextType>({
   isConfirmPasswordFieldFocused: null,
   setIsConfirmPasswordFieldFocused: () => {},
   confirmPasswordError: '',
+  setConfirmPasswordError: () => {},
   resetPasswordState: () => {},
 });
 
@@ -123,6 +127,7 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
         isPasswordFieldFocused,
         setIsPasswordFieldFocused,
         passwordError,
+        setPasswordError,
         confirmPasswordRef,
         confirmPassword,
         setConfirmPassword,
@@ -130,6 +135,7 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
         isConfirmPasswordFieldFocused,
         setIsConfirmPasswordFieldFocused,
         confirmPasswordError,
+        setConfirmPasswordError,
         resetPasswordState,
       }}>
       {children}
