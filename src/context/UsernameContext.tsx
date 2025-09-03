@@ -67,13 +67,16 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   }, [username]);
 
   function validateUsername(username: string): void {
-    const regex = /^[0-9a-z_](?:[0-9a-z_.]*[0-9a-z_])?$/;
+    const regex = /^[0-9a-z_](?:[0-9a-z_.]{0,18}[0-9a-z_])?$/;
     const usernameValidity: boolean = regex.test(username);
     setIsUsernameValid(usernameValidity);
   }
 
   useEffect(() => {
-    if (username && isUsernameValid && isUsernameAvailable === null) {
+    if (username && username.length > 20) {
+      setUsernameError('Username cannot exceed 20 characters.');
+      setUsernameToDebounce('');
+    } else if (username && isUsernameValid && isUsernameAvailable === null) {
       setUsernameError('');
       setUsernameToDebounce(username);
     } else if (

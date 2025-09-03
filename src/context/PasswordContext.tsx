@@ -73,13 +73,15 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
   }, [password]);
 
   const validatePassword = (password: string): void => {
-    const regex = /^.{8,}$/;
+    const regex = /^.{8,128}$/;
     const passwordValidity = regex.test(password);
     setIsPasswordValid(passwordValidity);
   };
 
   useEffect(() => {
-    if (password && isPasswordValid) {
+    if (password && password.length > 128) {
+      setPasswordError('Password cannot exceed 128 characters.');
+    } else if (password && isPasswordValid) {
       setPasswordError('');
     } else if (isPasswordValid === false && isPasswordFieldFocused === false) {
       setPasswordError('Password must be at least 8 characters long');

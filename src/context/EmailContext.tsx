@@ -54,13 +54,15 @@ export function EmailProvider({ children }: EmailProviderProps) {
   }, [email]);
 
   const validateEmail = (email: string): void => {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const regex = /^[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]{1,189}\.[a-zA-Z]{2,}$/;
     const emailValidity: boolean = regex.test(email);
     setIsEmailValid(emailValidity);
   };
 
   useEffect(() => {
-    if (email && isEmailValid && isEmailAlreadyRegistered === null) {
+    if (email && email.length > 254) {
+      setEmailError('Email cannot exceed 254 characters.');
+    } else if (email && isEmailValid && isEmailAlreadyRegistered === null) {
       setEmailError('');
       return;
     } else if (
