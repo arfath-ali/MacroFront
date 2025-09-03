@@ -10,6 +10,7 @@ interface EmailContextType {
   isEmailValid: boolean | null;
   emailError: string;
   setEmailError: (p: string) => void;
+  setIsEmailAlreadyRegistered: (p: boolean | null) => void;
   resetEmailState: () => void;
 }
 
@@ -22,6 +23,7 @@ const EmailContext = createContext<EmailContextType>({
   isEmailValid: null,
   emailError: '',
   setEmailError: () => {},
+  setIsEmailAlreadyRegistered: () => {},
   resetEmailState: () => {},
 });
 
@@ -33,10 +35,13 @@ export function EmailProvider({ children }: EmailProviderProps) {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const [email, setEmail] = useState('');
   const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null);
+  const [emailError, setEmailError] = useState('');
+  const [isEmailAlreadyRegistered, setIsEmailAlreadyRegistered] = useState<
+    boolean | null
+  >(null);
   const [isEmailFieldFocused, setIsEmailFieldFocused] = useState<
     boolean | null
   >(null);
-  const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
     if (email.trim() === '') {
@@ -55,7 +60,7 @@ export function EmailProvider({ children }: EmailProviderProps) {
   };
 
   useEffect(() => {
-    if (email && isEmailValid) {
+    if (email && isEmailValid && isEmailAlreadyRegistered === null) {
       setEmailError('');
       return;
     } else if (
@@ -87,6 +92,7 @@ export function EmailProvider({ children }: EmailProviderProps) {
         isEmailValid,
         emailError,
         setEmailError,
+        setIsEmailAlreadyRegistered,
         resetEmailState,
       }}>
       {children}
