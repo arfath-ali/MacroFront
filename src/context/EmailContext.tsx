@@ -39,6 +39,10 @@ export function EmailProvider({ children }: EmailProviderProps) {
   const [emailError, setEmailError] = useState('');
 
   useEffect(() => {
+    if (email.trim() === '') {
+      setIsEmailValid(null);
+    }
+
     if (email) {
       validateEmail(email);
     }
@@ -51,14 +55,18 @@ export function EmailProvider({ children }: EmailProviderProps) {
   };
 
   useEffect(() => {
-    if (isEmailValid) {
+    if (email && isEmailValid) {
       setEmailError('');
       return;
-    } else if (isEmailValid === false) {
+    } else if (
+      email &&
+      isEmailValid === false &&
+      isEmailFieldFocused === false
+    ) {
       setEmailError('Please enter a valid email address.');
       return;
     }
-  }, [isEmailValid]);
+  }, [email, isEmailValid, isEmailFieldFocused]);
 
   const resetEmailState = () => {
     if (emailRef.current) emailRef.current.value === '';
