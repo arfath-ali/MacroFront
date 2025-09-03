@@ -97,6 +97,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
 
   useEffect(() => {
     const checkUsernameAvailability = async () => {
+      setIsUsernameAvailable(null);
       if (isUsernameValid && debouncedUsername) {
         setIsSearchingUsername(true);
         try {
