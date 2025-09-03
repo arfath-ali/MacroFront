@@ -36,6 +36,7 @@ const SignUp = () => {
     isEmailValid,
     emailError,
     setEmailError,
+    setIsEmailAlreadyRegistered,
     resetEmailState,
   } = useEmailContext();
 
@@ -107,6 +108,7 @@ const SignUp = () => {
     e.preventDefault();
 
     setIsSignUpButtonClicked(true);
+    setIsEmailAlreadyRegistered(null);
 
     let hasFocused = false;
 
@@ -114,6 +116,16 @@ const SignUp = () => {
       if (!field.value) {
         field.setError('This field is required');
 
+        if (!hasFocused) {
+          field.ref.current?.focus();
+          hasFocused = true;
+        }
+      } else if ('valid' in field && field.valid === false) {
+        if (!hasFocused) {
+          field.ref.current?.focus();
+          hasFocused = true;
+        }
+      } else if ('available' in field && field.available === false) {
         if (!hasFocused) {
           field.ref.current?.focus();
           hasFocused = true;
@@ -155,7 +167,9 @@ const SignUp = () => {
       } catch (err: any) {
         const statusCode = err.response?.status;
         if (statusCode === 409) {
-          setSignUpError(err.response.data?.error);
+          setIsEmailAlreadyRegistered(true);
+          setEmailError(err.response.data?.error);
+          emailRef.current?.focus();
         } else if (statusCode === 500) {
           setSignUpError('Something went wrong. Please try again.');
         }
