@@ -141,15 +141,16 @@ const SignUp = () => {
 
         log(response?.data?.message);
 
-        resetFullNameState();
-        resetUsernameState();
-        resetEmailState();
-        resetPasswordState();
-
         setTimeout(() => {
           setSignUpLoading(false);
           setIsSignUpButtonClicked(false);
+
           navigate('/home', { replace: true });
+
+          resetFullNameState();
+          resetUsernameState();
+          resetEmailState();
+          resetPasswordState();
         }, 1500);
       } catch {
         setSignUpError('Something went wrong. Please try again.');
