@@ -73,7 +73,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   }
 
   useEffect(() => {
-    if (username && isUsernameValid) {
+    if (username && isUsernameValid && isUsernameAvailable === null) {
       setUsernameError('');
       setUsernameToDebounce(username);
     } else if (
