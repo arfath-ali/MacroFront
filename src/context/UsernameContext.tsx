@@ -56,18 +56,16 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   useEffect(() => {
     if (username.trim() === '') {
       setUsernameToDebounce('');
-      setIsUsernameAvailable(null);
-      return;
     }
 
     if (username) {
       validateUsername(username);
     }
+
+    setIsUsernameAvailable(null);
   }, [username]);
 
   function validateUsername(username: string): void {
-    console.log('Namaste Na');
-    console.log('Username: ', username);
     const regex = /^[0-9a-z_](?:[0-9a-z_.]*[0-9a-z_])?$/;
     const usernameValidity: boolean = regex.test(username);
     setIsUsernameValid(usernameValidity);
@@ -91,6 +89,8 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
           'Usernames can only use letters, numbers, underscores and periods.',
         );
       }
+
+      setUsernameToDebounce('');
     }
   }, [username, isUsernameValid, isUsernameFieldFocused]);
 
