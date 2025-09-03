@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { CurrentPathProvider } from './context/CurrentPathContext.tsx';
 import { ThemeProvider } from './context/ThemeContext.tsx';
+import { FullNameProvider } from './context/FullNameContext.tsx';
 import { UsernameProvider } from './context/UsernameContext.tsx';
 import { EmailProvider } from './context/EmailContext.tsx';
 import { PasswordProvider } from './context/PasswordContext.tsx';
@@ -14,13 +15,15 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <ThemeProvider>
         <CurrentPathProvider>
-          <UsernameProvider>
-            <EmailProvider>
-              <PasswordProvider>
-                <App />
-              </PasswordProvider>
-            </EmailProvider>
-          </UsernameProvider>
+          <FullNameProvider>
+            <UsernameProvider>
+              <EmailProvider>
+                <PasswordProvider>
+                  <App />
+                </PasswordProvider>
+              </EmailProvider>
+            </UsernameProvider>
+          </FullNameProvider>
         </CurrentPathProvider>
       </ThemeProvider>
     </BrowserRouter>

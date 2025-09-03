@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
+import useFullNameContext from '@/context/FullNameContext';
 import useUsernameContext from '@/context/UsernameContext';
 import useEmailContext from '@/context/EmailContext';
 import usePasswordContext from '@/context/PasswordContext';
@@ -11,9 +12,15 @@ import GreenCheckIcon from '@/assets/images/icons/green-check-icon.png';
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const fullNameRef = useRef<HTMLInputElement>(null);
-  const [fullName, setFullName] = useState('');
-  const [fullNameError, setFullNameError] = useState('');
+  const {
+    fullNameRef,
+    fullName,
+    setFullName,
+    isFullNameValid,
+    fullNameError,
+    setFullNameError,
+    resetFullNameState,
+  } = useFullNameContext();
 
   const {
     usernameRef,
@@ -59,7 +66,12 @@ const SignUp = () => {
   } = usePasswordContext();
 
   const fields = [
-    { value: fullName, ref: fullNameRef, setError: setFullNameError },
+    {
+      value: fullName,
+      ref: fullNameRef,
+      setError: setFullNameError,
+      valid: isFullNameValid,
+    },
     {
       value: username,
       ref: usernameRef,
@@ -97,12 +109,6 @@ const SignUp = () => {
     resetEmailState();
     resetPasswordState();
   }, []);
-
-  const resetFullNameState = () => {
-    if (fullNameRef.current) fullNameRef.current.value = '';
-    setFullName('');
-    setFullNameError('');
-  };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
