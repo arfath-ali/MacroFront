@@ -55,6 +55,7 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
 
   useEffect(() => {
     if (username.trim() === '') {
+      setIsUsernameValid(null);
       setUsernameToDebounce('');
     }
 
@@ -118,10 +119,8 @@ export function UsernameProvider({ children }: UsernameProviderProps) {
   useEffect(() => {
     if (isUsernameAvailable) {
       setUsernameError('');
-      return;
     } else if (isUsernameAvailable === false) {
       setUsernameError("This username isn't available. Please try another.");
-      return;
     }
   }, [isUsernameAvailable]);
 
