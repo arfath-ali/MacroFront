@@ -91,10 +91,17 @@ const SignUp = () => {
   const [signUpError, setSignUpError] = useState('');
 
   useEffect(() => {
+    resetFullNameState();
     resetUsernameState();
     resetEmailState();
     resetPasswordState();
   }, []);
+
+  const resetFullNameState = () => {
+    if (fullNameRef.current) fullNameRef.current.value = '';
+    setFullName('');
+    setFullNameError('');
+  };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -134,9 +141,7 @@ const SignUp = () => {
 
         log(response?.data?.message);
 
-        if (fullNameRef.current) fullNameRef.current.value = '';
-        setFullName('');
-        setFullNameError('');
+        resetFullNameState();
         resetUsernameState();
         resetEmailState();
         resetPasswordState();
