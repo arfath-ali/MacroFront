@@ -69,7 +69,7 @@ export function EmailProvider({ children }: EmailProviderProps) {
   }, [email, isEmailValid, isEmailFieldFocused]);
 
   const resetEmailState = () => {
-    if (emailRef.current) emailRef.current.value === '';
+    if (emailRef.current) emailRef.current.value = '';
     setEmail('');
     setIsEmailFieldFocused(null);
     setIsEmailValid(null);
