@@ -64,6 +64,9 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   useEffect(() => {
+    if (password.trim() === '') {
+      setIsPasswordValid(null);
+    }
     if (password) {
       validatePassword(password);
     }
@@ -76,20 +79,15 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
   };
 
   useEffect(() => {
-    if (isPasswordValid) {
+    if (password && isPasswordValid) {
       setPasswordError('');
-    } else if (isPasswordValid === false) {
+    } else if (isPasswordValid === false && isPasswordFieldFocused === false) {
       setPasswordError('Password must be at least 8 characters long');
     }
-  }, [isPasswordValid]);
+  }, [password, isPasswordValid, isPasswordFieldFocused]);
 
   useEffect(() => {
-    if (
-      password &&
-      confirmPassword &&
-      !isPasswordFieldFocused &&
-      !isConfirmPasswordFieldFocused
-    ) {
+    if (confirmPassword && !isConfirmPasswordFieldFocused) {
       if (confirmPassword === password) {
         setIsConfirmPasswordMatched(true);
         setConfirmPasswordError('');
@@ -98,14 +96,10 @@ export function PasswordProvider({ children }: PasswordProviderProps) {
         setConfirmPasswordError('Passwords do not match.');
       }
     }
-  }, [
-    password,
-    confirmPassword,
-    isPasswordFieldFocused,
-    isConfirmPasswordFieldFocused,
-  ]);
+  }, [confirmPassword, isConfirmPasswordFieldFocused]);
 
   const resetPasswordState = () => {
+    if (passwordRef.current) passwordRef.current.value = '';
     setPassword('');
     setIsPasswordValid(null);
     setIsPasswordFieldFocused(null);
