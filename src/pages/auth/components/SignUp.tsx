@@ -152,8 +152,13 @@ const SignUp = () => {
           resetEmailState();
           resetPasswordState();
         }, 1500);
-      } catch {
-        setSignUpError('Something went wrong. Please try again.');
+      } catch (err: any) {
+        const statusCode = err.response?.status;
+        if (statusCode === 409) {
+          setSignUpError(err.response.data?.error);
+        } else if (statusCode === 500) {
+          setSignUpError('Something went wrong. Please try again.');
+        }
         setSignUpLoading(false);
         setIsSignUpButtonClicked(false);
       }
