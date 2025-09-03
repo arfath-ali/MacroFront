@@ -134,6 +134,9 @@ const SignUp = () => {
 
         log(response?.data?.message);
 
+        if (fullNameRef.current) fullNameRef.current.value = '';
+        setFullName('');
+        setFullNameError('');
         resetUsernameState();
         resetEmailState();
         resetPasswordState();
